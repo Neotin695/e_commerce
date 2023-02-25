@@ -18,10 +18,9 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget { 
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  
   @override
   Widget build(BuildContext context) {
     return DynamicColorBuilder(
@@ -42,22 +41,24 @@ class MyApp extends StatelessWidget {
           darkScheme = darkColorScheme;
         }
 
-        return ResponsiveSizer(builder: (context, orientation, screenType) {
-          return GetMaterialApp(
-            initialBinding: Binding(),
-            theme: ThemeData(
-              useMaterial3: true,
-              colorScheme: lightScheme,
-              extensions: [lightCustomColors],
-            ),
-            darkTheme: ThemeData(
-              useMaterial3: true,
-              colorScheme: darkScheme,
-              extensions: [darkCustomColors],
-            ),
-            home: const Decisions(),
-          );
-        });
+        return ResponsiveSizer(
+          builder: (context, orientation, screenType) {
+            return GetMaterialApp(
+              initialBinding: Binding(),
+              theme: ThemeData(
+                useMaterial3: true,
+                colorScheme: lightScheme,
+                extensions: [lightCustomColors],
+              ),
+              darkTheme: ThemeData(
+                useMaterial3: true,
+                colorScheme: darkScheme,
+                extensions: [darkCustomColors],
+              ),
+              home: const Decisions(),
+            );
+          },
+        );
       },
     );
   }

@@ -1,12 +1,11 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_offline/flutter_offline.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../core/viewmodel/handling_exception.dart';
 import '../../core/viewmodel/auth view model/auth_view_model.dart';
+import '../component/err_widget.dart';
 
 class RegisterScreen extends GetWidget<AuthViewModel> {
   RegisterScreen({super.key});
@@ -14,38 +13,15 @@ class RegisterScreen extends GetWidget<AuthViewModel> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: OfflineBuilder(
-        debounceDuration: const Duration(milliseconds: 10),
-        connectivityBuilder: ((_, result, child) {
-          if (result == ConnectivityResult.none) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/icons/server_down.svg',
-                    width: 20.w,
-                    height: 20.h,
-                  ),
-                  SizedBox(height: 5.h),
-                  Text(
-                    'No Internet Connection',
-                    style:
-                        TextStyle(fontSize: 22.sp, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return child;
-          }
-        }),
-        child: SingleChildScrollView(
+    return ErrWidget(
+      title: 'No internet connection',
+      imageUrl: 'assets/icons/server_down.svg',
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+        ),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               _buildAuthForm(context),

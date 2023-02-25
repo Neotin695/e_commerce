@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
 
 import '../../../core/viewmodel/home view model/bottom_navigation_view_model.dart';
 import '../../../core/viewmodel/home view model/hom_screen_view_model.dart';
+import '../component/err_widget.dart';
 
 class MainHomeScreen extends GetWidget<HomeScreenViewModel> {
   const MainHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BottomNavigationViewModel>(
-      init: BottomNavigationViewModel(),
-      builder: (controllers) => Scaffold(
-        appBar: AppBar(title: const Text('E-commerce')),
-        body: controllers.currentMainScreen,
-        bottomNavigationBar: _buildNavigationBar(),
+    return ErrWidget(
+      title: 'No internet connection',
+      imageUrl: 'assets/icons/server_down.svg',
+      child: GetBuilder<BottomNavigationViewModel>(
+        init: BottomNavigationViewModel(),
+        builder: (controllers) => Scaffold(
+          appBar: AppBar(title: const Text('E-commerce')),
+          body: controllers.currentMainScreen,
+          bottomNavigationBar: _buildNavigationBar(),
+        ),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../core/viewmodel/home view model/bottom_navigation_view_model.dart';
+import '../../component/err_widget.dart';
 import '../admin_drawer.dart';
 
 class CreateCategory extends GetWidget<BottomNavigationViewModel> {
@@ -9,15 +10,19 @@ class CreateCategory extends GetWidget<BottomNavigationViewModel> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BottomNavigationViewModel>(
-      init: BottomNavigationViewModel(),
-      builder: (controller) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Category Managament'),
+    return ErrWidget(
+      title: 'No internet connection',
+      imageUrl: 'assets/icons/server_down.svg',
+      child: GetBuilder<BottomNavigationViewModel>(
+        init: BottomNavigationViewModel(),
+        builder: (controller) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Category Managament'),
+          ),
+          drawer: const AdminDrawer(),
+          body: controller.currentCategoryScreen,
+          bottomNavigationBar: _buildNavigationBar(),
         ),
-        drawer: const AdminDrawer(),
-        body: controller.currentCategoryScreen,
-        bottomNavigationBar: _buildNavigationBar(),
       ),
     );
   }
