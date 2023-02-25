@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "897983438739",
+    "project_id": "e-commerce-72844",
+    "storage_bucket": "e-commerce-72844.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:897983438739:android:e55726b8c1ae9aa160d266",
+        "android_client_info": {
+          "package_name": "mehani.sim.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "897983438739-2d2rpj94kvt223oan725b8rdnsim9hvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBOzkQNDtTUYYoznCFre4ZRdOubbUoVdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "897983438739-2d2rpj94kvt223oan725b8rdnsim9hvl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
