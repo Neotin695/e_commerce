@@ -1,11 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../core/constance datat/category_data.dart';
 import '../../../core/viewmodel/product view model/admin_product_view_model.dart';
-import '../../../model/category.dart';
 
 class AdminProductModifyScreen extends GetWidget<AdminProductViewModel> {
   const AdminProductModifyScreen({super.key});
@@ -84,22 +83,14 @@ class CustomDropMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Categories').snapshots(),
-        builder: (_, snapshot) {
-          if (snapshot.hasData) {
-            return DropdownButton(
-              items: snapshot.data!.docs.map((data) {
-                Categories categories = Categories.fromMap(data.data());
-                return DropdownMenuItem(
-                  value: categories.name,
-                  child: Text(categories.name),
-                );
-              }).toList(),
-              onChanged: onChange,
-            );
-          }
-          return Container();
-        });
+    return DropdownButton(
+      items: CategoryData.categories.map((category) {
+        return DropdownMenuItem(
+          value: category.name,
+          child: Text(category.name),
+        );
+      }).toList(),
+      onChanged: onChange,
+    );
   }
 }

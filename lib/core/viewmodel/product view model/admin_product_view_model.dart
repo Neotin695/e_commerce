@@ -70,8 +70,7 @@ class AdminProductViewModel extends GetxController {
         downloadingUrls.add(await snapshot.ref.getDownloadURL());
       }
       return downloadingUrls;
-    } on FirebaseException catch (e) {
-      print(e);
+    } on FirebaseException {
       return [''];
     }
   }

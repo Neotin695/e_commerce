@@ -9,12 +9,10 @@ class ProfileScreen extends GetWidget<AuthViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: ElevatedButton.icon(
-          label: const Text("LogOut"),
-          onPressed: () => controller.signOut(),
-          icon: const Icon(Icons.logout),
-        ),
+      body: ElevatedButton.icon(
+        label: const Text("LogOut"),
+        onPressed: () => controller.signOut(),
+        icon: const Icon(Icons.logout),
       ),
     );
   }

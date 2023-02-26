@@ -4,12 +4,11 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../main/main_home_screen.dart';
-import 'category screen/admin_create_category_screen.dart';
 import 'main_admin_screen.dart';
 import 'message_screen.dart';
 import 'product screen/admin_create_product_screen.dart';
 
-enum SubmitType { category, product, message, home, store }
+enum SubmitType { product, message, home, store }
 
 class AdminDrawer extends StatelessWidget {
   const AdminDrawer({super.key});
@@ -34,12 +33,6 @@ class AdminDrawer extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-          ListTile(
-            onTap: () => _submit(SubmitType.category),
-            title: const Text('Add Category'),
-            leading: const Icon(Icons.category),
-            trailing: const Icon(Icons.chevron_right),
           ),
           ListTile(
             onTap: () => _submit(SubmitType.product),
@@ -72,9 +65,6 @@ class AdminDrawer extends StatelessWidget {
 
   void _submit(SubmitType submitType) {
     switch (submitType) {
-      case SubmitType.category:
-        Get.off(() => const CreateCategory());
-        break;
       case SubmitType.product:
         Get.off(() => const CreateProduct());
         break;

@@ -1,16 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../core/constance datat/category_data.dart';
 import '../../model/category.dart';
 
 class CategoriesWidget extends StatelessWidget {
-  final AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot;
-  final Function(Categories) onTap;
+  final Function(String) onTap;
   const CategoriesWidget({
     super.key,
-    required this.snapshot,
     required this.onTap,
   });
 
@@ -21,9 +19,26 @@ class CategoriesWidget extends StatelessWidget {
       height: 15.h,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: snapshot.data!.docs.map((doc) {
-          final Categories categories = Categories.fromMap(doc.data());
-          return CategoryWidget(onTap: onTap, categories: categories);
+        children: CategoryData.categories.map((category) {
+          return InkWell(
+            onTap: () => onTap(category.name),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3.w),
+              child: Column(
+                children: [
+                  SvgPicture.asset(
+                    category.imageUrl,
+                    width: 10.w,
+                    height: 10.h,
+                  ),
+                  Text(
+                    category.name,
+                  ),
+                  const Divider()
+                ],
+              ),
+            ),
+          );
         }).toList(),
       ),
     );
@@ -43,15 +58,15 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap(categories),
+      onTap: () => onTap(categories),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
         child: Column(
           children: [
-            SvgPicture.network(
+            SvgPicture.asset(
               categories.imageUrl,
-              width: 10.w,
-              height: 10.h,
+              width: 7.w,
+              height: 7.h,
             ),
             Text(
               categories.name,

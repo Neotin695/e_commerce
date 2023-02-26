@@ -40,7 +40,7 @@ class ProductWidget extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(product),
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -27,7 +27,7 @@ class HomeScreenViewModel extends GetxController {
   get currentScreen {
     switch (_currentSelectedScreen) {
       case SelectedScreen.homescreen:
-        return HomeScreen();
+        return const HomeScreen();
       case SelectedScreen.cartscreen:
         return const CartScreen();
       case SelectedScreen.profilescreen:

@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
         return ResponsiveSizer(
           builder: (context, orientation, screenType) {
             return GetMaterialApp(
+              debugShowCheckedModeBanner: false,
               initialBinding: Binding(),
               theme: ThemeData(
                 useMaterial3: true,

@@ -24,8 +24,8 @@ class AuthViewModel extends GetxController {
         email: userCredential.user!.email ?? '',
       );
       createProfile(user);
-    } on PlatformException catch (e) {
-      print(e);
+    } on PlatformException {
+      rethrow;
     }
   }
 
@@ -38,8 +38,8 @@ class AuthViewModel extends GetxController {
       final googleAuth = await authenticationWithGoogle();
       return GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    } on PlatformException catch (e) {
-      throw e;
+    } on PlatformException {
+      rethrow;
     }
   }
 
@@ -51,16 +51,16 @@ class AuthViewModel extends GetxController {
   createAccount() async {
     try {
       await authenticateNewUser();
-    } on FirebaseException catch (e) {
-      throw e;
+    } on FirebaseException {
+      rethrow;
     }
   }
 
   Future<void> loginAccount() async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseException catch (e) {
-      throw e;
+    } on FirebaseException {
+      rethrow;
     }
   }
 

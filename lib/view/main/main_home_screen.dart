@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_offline/flutter_offline.dart';
 import 'package:get/get.dart';
 
 import '../../../core/viewmodel/home view model/bottom_navigation_view_model.dart';

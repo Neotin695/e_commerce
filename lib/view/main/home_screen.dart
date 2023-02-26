@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/view/component/products.dart';
+import 'package:e_commerce/view/main/category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../../../model/category.dart';
 import '../../core/viewmodel/auth view model/auth_view_model.dart';
 import '../component/categories.dart';
 import '../component/search_bar.dart';
@@ -16,10 +16,6 @@ class HomeScreen extends GetWidget<AuthViewModel> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildBody();
-  }
-
-  Scaffold _buildBody() {
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -38,7 +34,7 @@ class HomeScreen extends GetWidget<AuthViewModel> {
                 ),
               ),
             ),
-            _buildCategoryList(),
+            CategoriesWidget(onTap: _gotoCategory),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 3.w),
               child: ListTile(
@@ -111,27 +107,13 @@ class HomeScreen extends GetWidget<AuthViewModel> {
     );
   }
 
-  Widget _buildCategoryList() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('Categories').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return CategoriesWidget(
-              snapshot: snapshot,
-              onTap: _gotoCategory,
-            );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        });
-  }
-
   void _submit(value) {}
 
   void _gotoDetailsScreen(product) {
     Get.to(() => DetialsScreen(), arguments: product);
   }
 
-  _gotoCategory(Categories p1) {}
+  void _gotoCategory(categoryName) {
+    Get.to(() => const CategoryScreen(), arguments: categoryName);
+  }
 }
