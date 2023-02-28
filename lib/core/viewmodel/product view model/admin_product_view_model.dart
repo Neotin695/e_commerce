@@ -8,11 +8,24 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../model/product.dart';
 
+enum ProductType {
+  men,
+  women,
+  electronic,
+  toy,
+  kids,
+  smartPhone,
+  computer,
+  homeAppliances,
+  other
+}
+
 class AdminProductViewModel extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController desc = TextEditingController();
-  String category = '';
+  TextEditingController count = TextEditingController();
+  TextEditingController size = TextEditingController();
 
   final _storeRef = FirebaseFirestore.instance;
   final _storageRef = FirebaseStorage.instance.ref('Products/images');
@@ -21,7 +34,18 @@ class AdminProductViewModel extends GetxController {
   List<File> imageFiles = [];
   final ImagePicker _imagePicker = ImagePicker();
 
-  createProduct() async {
+  // Color pickerColor = Color(0xff443a49);
+  List<Color> currentColor = [];
+
+  List<Color> availableColors = [];
+// ValueChanged<Color> callback
+  void changeColor(colors) {
+    availableColors.clear();
+    availableColors.addAll(colors);
+    update();
+  }
+
+  createProduct(categoryName) async {
     if (_images.isEmpty) {
       _showMessageToUser('Error', 'Please select images first');
     } else if (name.text.isEmpty) {
@@ -33,13 +57,15 @@ class AdminProductViewModel extends GetxController {
     } else {
       final downloadingUrls = await _uploadImages();
       final product = Product(
-        id: name.text,
-        name: name.text,
-        price: double.parse(price.text),
-        disc: desc.text,
-        imagesUrls: downloadingUrls,
-        category: category,
-      );
+          id: name.text,
+          name: name.text,
+          price: double.parse(price.text),
+          disc: desc.text,
+          imagesUrls: downloadingUrls,
+          category: categoryName,
+          count: int.parse(count.text),
+          colors: List<int>.from(availableColors.map((e) => e.value)),
+          sizes: size.text.split(','));
       _storeRef
           .collection('Products')
           .doc(product.category)
@@ -82,6 +108,7 @@ class AdminProductViewModel extends GetxController {
   }
 
   getImages() async {
+    _images.clear();
     _images = await _getSelectedImages();
     if (isImagesNotAvailable) {
       _showMessageToUser('User Event', 'user cancel selected');

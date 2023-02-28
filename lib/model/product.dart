@@ -6,7 +6,10 @@ class Product {
   double price;
   String disc;
   String category;
+  int count;
   List<String> imagesUrls;
+  final List<String> sizes;
+  final List<int> colors;
   Product({
     required this.id,
     required this.name,
@@ -14,6 +17,9 @@ class Product {
     required this.disc,
     required this.imagesUrls,
     required this.category,
+    required this.count,
+    required this.colors,
+    required this.sizes,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,7 +29,10 @@ class Product {
       'price': price,
       'disc': disc,
       'imagesUrls': imagesUrls,
-      'category': category
+      'category': category,
+      'count': count,
+      'sizes': sizes,
+      'colors': colors
     };
   }
 
@@ -35,6 +44,9 @@ class Product {
       disc: map['disc'] as String,
       imagesUrls: List<String>.from(map['imagesUrls'].map((e) => e)),
       category: map['category'] as String,
+      count: int.parse(map['count'].toString()),
+      sizes: List<String>.from(map['sizes'].map((value) => value)),
+      colors: List<int>.from(map['colors'].map((value) => value)),
     );
   }
 

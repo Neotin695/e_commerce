@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../model/product.dart';
+import '../component/color_widget.dart';
 import '../component/err_widget.dart';
 
 class DetialsScreen extends StatelessWidget {
@@ -50,45 +51,7 @@ class DetialsScreen extends StatelessWidget {
                   product.disc,
                 ),
               ),
-              Card(
-                elevation: 3,
-                child: Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
-                  height: 10.h,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'PRICE',
-                            style: TextStyle(
-                              fontSize: 15.sp,
-                            ),
-                          ),
-                          Text(
-                            "\$${product.price}",
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Text('ADD'),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
+              _buildBottomAction(context)
             ],
           ),
         ),
@@ -96,50 +59,81 @@ class DetialsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildBottomAction(BuildContext context) {
+    return Card(
+              elevation: 3,
+              child: Container(
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                height: 10.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'PRICE',
+                          style: TextStyle(
+                            fontSize: 15.sp,
+                          ),
+                        ),
+                        Text(
+                          "\$${product.price}",
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            color: Theme.of(context).colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('ADD'),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+  }
+
   Row _buildOption() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _buildBox(
-          'Size',
-          Text(
-            'XL',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp),
-          ),
-        ),
-        _buildBox(
-          'Colour',
-          Text(
-            'XL',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp),
-          ),
-        ),
+        DropdownButton(
+            items: product.sizes.map<DropdownMenuItem<String>>((e) {
+              return DropdownMenuItem(
+                value: e,
+                child: Text(
+                  e,
+                ),
+              );
+            }).toList(),
+            onChanged: (v) {}),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              'Colour:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp),
+            ),
+            SizedBox(width: 1.w),
+            ColorsWidget(
+              availableColors:
+                  List<Color>.from(product.colors.map((e) => Color(e))),
+            ),
+          ],
+        )
       ],
     );
   }
 
-  Container _buildBox(label, widget) {
-    return Container(
-      width: 40.w,
-      padding: EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.3.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: const Color.fromARGB(255, 201, 200, 200)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 17.sp),
-          ),
-          widget,
-        ],
-      ),
-    );
-  }
-
-  CarouselSlider _buildImageSlider() {
+  Widget _buildImageSlider() {
     return CarouselSlider(
       items: product.imagesUrls
           .map((imageUrl) => Image.network(
