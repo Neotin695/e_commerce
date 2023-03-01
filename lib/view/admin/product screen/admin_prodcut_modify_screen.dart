@@ -59,7 +59,7 @@ class AdminProductModifyScreen extends GetWidget<AdminProductViewModel> {
                         TextInputType.number),
                     space,
                     _buildPaddingTextField(controller.size, 'Product size',
-                        TextInputType.text, 'xl,l,xlll'),
+                        TextInputType.text, 'xl,l,xxl'),
                     space,
                     _buildAvailableColorsWidget(category, context, space),
                     space,
