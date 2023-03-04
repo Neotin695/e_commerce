@@ -8,18 +8,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../model/product.dart';
 
-enum ProductType {
-  men,
-  women,
-  electronic,
-  toy,
-  kids,
-  smartPhone,
-  computer,
-  homeAppliances,
-  other
-}
-
 class AdminProductViewModel extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
@@ -27,54 +15,59 @@ class AdminProductViewModel extends GetxController {
   TextEditingController count = TextEditingController();
   TextEditingController size = TextEditingController();
 
-  final _storeRef = FirebaseFirestore.instance;
+  final GlobalKey<FormState> globalKey = GlobalKey();
+
+  final _storeRef = FirebaseFirestore.instance.collection('Products');
   final _storageRef = FirebaseStorage.instance.ref('Products/images');
 
-  List<XFile> _images = [];
-  List<File> imageFiles = [];
-  final ImagePicker _imagePicker = ImagePicker();
-
-  // Color pickerColor = Color(0xff443a49);
   List<Color> currentColor = [];
-
   List<Color> availableColors = [];
-// ValueChanged<Color> callback
   void changeColor(colors) {
     availableColors.clear();
     availableColors.addAll(colors);
     update();
   }
 
-  createProduct(categoryName) async {
-    if (_images.isEmpty) {
-      _showMessageToUser('Error', 'Please select images first');
-    } else if (name.text.isEmpty) {
-      _showMessageToUser('Error', 'Please enter product name first');
-    } else if (price.text.isEmpty) {
-      _showMessageToUser('Error', 'Please  enter product price first');
-    } else if (desc.text.isEmpty) {
-      _showMessageToUser('Error', 'Please  enter product description first');
+  String? customValidator(String? value) {
+    if (value!.isEmpty) {
+      return 'this field is required';
     } else {
-      final downloadingUrls = await _uploadImages();
-      final product = Product(
-          id: name.text,
-          name: name.text,
-          price: double.parse(price.text),
-          disc: desc.text,
-          imagesUrls: downloadingUrls,
-          category: categoryName,
-          count: int.parse(count.text),
-          colors: List<int>.from(availableColors.map((e) => e.value)),
-          sizes: size.text.split(','));
-      _storeRef
-          .collection('Products')
-          .doc(product.category)
-          .collection('Product')
-          .doc(product.name)
-          .set(product.toMap());
+      return null;
+    }
+  }
+
+  createProductByCategoryName(categoryName) async {
+    if (imagesEmpty) {
+      _showMessageToUser('Error', 'Please select images first');
+    } else if (inputsNotValidate) {
+      return;
+    } else {
+      final downloadUrls = await _uploadImages();
+      final pathFireStore =
+          _storeRef.doc(categoryName).collection('Product').doc();
+      final product =
+          initDataToModel(categoryName, downloadUrls, pathFireStore.id);
+      pathFireStore.set(product.toMap());
       _cleanAllInputs();
     }
     update();
+  }
+
+  bool get inputsNotValidate => !globalKey.currentState!.validate();
+
+  bool get imagesEmpty => _images.isEmpty;
+
+  Product initDataToModel(categoryName, downloadUrls, id) {
+    return Product(
+        id: id,
+        name: name.text,
+        price: double.parse(price.text),
+        disc: desc.text,
+        imagesUrls: downloadUrls,
+        category: categoryName,
+        count: int.parse(count.text),
+        colors: List<int>.from(availableColors.map((e) => e.value)),
+        sizes: size.text.split(','));
   }
 
   void _cleanAllInputs() {
@@ -83,6 +76,9 @@ class AdminProductViewModel extends GetxController {
     desc.clear();
     imageFiles.clear();
     _images.clear();
+    count.clear();
+    size.clear();
+    availableColors.clear();
   }
 
   Future<List<String>> _uploadImages() async {
@@ -107,6 +103,15 @@ class AdminProductViewModel extends GetxController {
         snackPosition: SnackPosition.BOTTOM);
   }
 
+  _showMessageToUser(title, message) {
+    Get.snackbar(title, message, snackPosition: SnackPosition.BOTTOM);
+  }
+
+  final ImagePicker _imagePicker = ImagePicker();
+  List<XFile> _images = [];
+  List<File> imageFiles = [];
+  bool get isImagesNotAvailable => _images.isEmpty;
+
   getImages() async {
     _images.clear();
     _images = await _getSelectedImages();
@@ -117,12 +122,6 @@ class AdminProductViewModel extends GetxController {
     }
     update();
   }
-
-  void _showMessageToUser(title, message) {
-    Get.snackbar(title, message, snackPosition: SnackPosition.BOTTOM);
-  }
-
-  bool get isImagesNotAvailable => _images.isEmpty;
 
   _getImagesByPath(images) {
     return _images.map((xFile) => File(xFile.path));

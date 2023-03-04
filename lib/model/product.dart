@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Product {
   String id;
   String name;
@@ -8,8 +6,9 @@ class Product {
   String category;
   int count;
   List<String> imagesUrls;
-  final List<String> sizes;
-  final List<int> colors;
+  List<String> sizes;
+  List<int> colors;
+
   Product({
     required this.id,
     required this.name,
@@ -49,9 +48,4 @@ class Product {
       colors: List<int>.from(map['colors'].map((value) => value)),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Product.fromJson(String source) =>
-      Product.fromMap(json.decode(source) as Map<String, dynamic>);
 }
